@@ -1,5 +1,4 @@
 import pygame
-
 import time
 from queue import PriorityQueue
 
