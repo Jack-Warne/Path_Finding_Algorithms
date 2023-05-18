@@ -7,7 +7,7 @@ WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("Dijkstra's Path Finding Algorithm")
 
 
-# each colour represents the state of each node, helping determine what set it bleongs to
+# each colour represents the state of each node, helping determine what set it belongs to
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
