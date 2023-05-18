@@ -120,8 +120,8 @@ def algorithm(draw, grid, start, end):
     open_set = PriorityQueue()
     open_set.put((0, count, start))
     came_from = {}
-    g_score = {node: float("inf") for row in grid for node in row}
-    g_score[start] = 0
+    Q = {node: float("inf") for row in grid for node in row}
+    Q[start] = 0
 
     while not open_set.empty():
         for event in pygame.event.get():
@@ -135,12 +135,12 @@ def algorithm(draw, grid, start, end):
             return True
 
         for neighbour in current.neighbours:
-            temp_g_score = g_score[current] + 1
+            temp_Q = Q[current] + 1
 
-            if temp_g_score < g_score[neighbour]:
+            if temp_Q < Q[neighbour]:
                 came_from[neighbour] = current
-                g_score[neighbour] = temp_g_score
-                open_set.put((g_score[neighbour], count, neighbour))
+                Q[neighbour] = temp_Q
+                open_set.put((Q[neighbour], count, neighbour))
                 neighbour.OPEN()
         draw()
 
@@ -148,7 +148,6 @@ def algorithm(draw, grid, start, end):
             current.CLOSE()
 
     return False
-
 
            
 # create a grid data structure to hold all of the nodes and their respective data
