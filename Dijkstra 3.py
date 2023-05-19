@@ -49,7 +49,7 @@ class Node:
         return self.colour == GREEN
     
     def is_dest_node(self): # defines where the algorithm is trying to go
-        return self.colur == RED
+        return self.colour == RED
     
     def reset_node(self): # resets a node from any given state back to the default state
         self.colour = WHITE
