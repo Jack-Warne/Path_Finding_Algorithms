@@ -36,7 +36,7 @@ class Node:
     def get_pos(self): # this returns the position of any given square in the grid
         return self.row, self.col
     
-    def is_closed(self): # checks if a node is closed/checked i.e a red node in the closed set
+    def is_closed(self): # checks if a node is closed/checked i.e a yellow node in the closed set
         return self.colour == YELLOW
      
     def is_open(self): #checks if current node is in the open set
@@ -48,7 +48,7 @@ class Node:
     def is_start_node(self): # defines where the search will start from
         return self.colour == GREEN
     
-    def is_dest_node(self): # defines where the algorith is trying to go
+    def is_dest_node(self): # defines where the algorithm is trying to go
         return self.colur == RED
     
     def reset_node(self): # resets a node from any given state back to the default state
