@@ -1,4 +1,5 @@
 import pygame
+
 import time
 from queue import PriorityQueue
 
@@ -7,7 +8,7 @@ WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("Dijkstra's Path Finding Algorithm")
 
 
-# each colour represents the state of each node, helping determine what set it belongs to
+# each colour represents the state of each node, helping determine what set it bleongs to
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -80,17 +81,18 @@ class Node:
     def update_neighbours(self, grid): # adds all valid neighbours to the neigbours list so it doesn't try and traverse through barriers
         # check up down left right and check they are not barriers
         self.neighbours = []
+        if self.col < self.total_rows -1 and not grid[self.row][self.col + 1].is_barrier(): # check left
+                self.neighbours.append(grid[self.row][self.col + 1])
+        
+        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier(): # check up
+            self.neighbours.append(grid[self.row - 1][self.col])
+        
+        if self.row < self.total_rows - 1 and not grid[self.row][self.col - 1].is_barrier(): # check right
+             self.neighbours.append(grid[self.row][self.col-1])
+            
         if self.row < self.total_rows -1 and not grid[self.row + 1][self.col].is_barrier(): # check down
             self.neighbours.append(grid[self.row + 1][self.col])
             
-        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier(): # check up
-            self.neighbours.append(grid[self.row - 1][self.col])
-        if self.col < self.total_rows -1 and not grid[self.row][self.col + 1].is_barrier(): # check left
-                self.neighbours.append(grid[self.row][self.col + 1])
-                
-        if self.row < self.total_rows - 1 and not grid[self.row][self.col - 1].is_barrier(): # check right
-            self.neighbours.append(grid[self.row][self.col-1])
-                   
     def __lt__ (self, other): # less than function compares two nodes
         return False
 
@@ -117,18 +119,18 @@ def reconstruct_path(came_from, current, end, draw):
 def algorithm(draw, grid, start, end):
     count = 0
     open_set = PriorityQueue()
-    open_set.put((0, count, start))
-    came_from = {}
-    Q = {node: float("inf") for row in grid for node in row}
+    open_set.put((0, count, start)) # adds start node with its score of 0, count is used to break ties if two nodes have the same score
+    came_from = {} # creates a list of where each node came from to make path reconstruction easier
+    Q = {node: float("inf") for row in grid for node in row} # sets all nodes to have a score of infinity as the scores are unknown
     Q[start] = 0
 
     while not open_set.empty():
-        for event in pygame.event.get():
+        for event in pygame.event.get(): # if there is no possible path the user can still quit
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-        current = open_set.get()[2]
-        if current == end:
+        current = open_set.get()[2] # finding the current node indexing at 2 because we just want the node not the score
+        if current == end: # if the end node has been reached reconstruct the path
             reconstruct_path(came_from, current, end, draw)
             end.END()
             return True
@@ -136,17 +138,18 @@ def algorithm(draw, grid, start, end):
         for neighbour in current.neighbours:
             temp_Q = Q[current] + 1
 
-            if temp_Q < Q[neighbour]:
+            if temp_Q < Q[neighbour]: # if q score is lower update values to make a better path
                 came_from[neighbour] = current
                 Q[neighbour] = temp_Q
                 open_set.put((Q[neighbour], count, neighbour))
-                neighbour.OPEN()
+                neighbour.OPEN() # show we have already considered the node
         draw()
 
         if current != start:
             current.CLOSE()
 
     return False
+
 
            
 # create a grid data structure to hold all of the nodes and their respective data
@@ -220,7 +223,7 @@ def main(win, width):
                 if node == start:
                     start = None
                 elif node == end:
-                    end == None
+                    end = None
             if event.type == pygame.KEYDOWN: # checks to see if a key has been pressed
                 if event.key == pygame.K_SPACE and not started: # if the key pressed is spacebar then the algorithm runs
                     start_time = time.time()
