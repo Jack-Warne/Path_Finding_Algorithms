@@ -7,7 +7,7 @@ WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("A* Path Finding Algorithm")
 
 
-# each colour represents the state of each node, helping determine what set it belongs to
+# each colour represents the state of each node, helping determine what set it bleongs to
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -40,7 +40,7 @@ class Node:
     def is_closed(self): # checks if a node is closed/checked i.e a yellow node in the closed set
         return self.colour == YELLOW
      
-    def is_open(self): #checks if current node is in the open set
+    def is_open(self): # checks if current node is in the open set
         return self.colour == ORANGE
     
     def is_barrier(self): # checks if node is checkable
@@ -49,8 +49,8 @@ class Node:
     def is_start_node(self): # defines where the search will start from
         return self.colour == GREEN
     
-    def is_dest_node(self): # defines where the algorithm is trying to go
-        return self.colur == RED
+    def is_dest_node(self): # defines where the algorith is trying to go
+        return self.colour == RED
     
     def reset_node(self): # resets a node from any given state back to the default state
         self.colour = WHITE
@@ -81,18 +81,18 @@ class Node:
     def update_neighbours(self, grid): # adds all valid neighbours to the neigbours list so it doesn't try and traverse through barriers
         # check up down left right and check they are not barriers
         self.neighbours = []
-        if self.row < self.total_rows -1 and not grid[self.row + 1][self.col].is_barrier(): # check down
-            self.neighbours.append(grid[self.row + 1][self.col])
-            
+        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier(): # check left
+                self.neighbours.append(grid[self.row][self.col + 1])
+        
         if self.row > 0 and not grid[self.row - 1][self.col].is_barrier(): # check up
             self.neighbours.append(grid[self.row - 1][self.col])
-            
-        if self.col < self.total_rows -1 and not grid[self.row][self.col + 1].is_barrier(): # check left
-                self.neighbours.append(grid[self.row][self.col + 1])
-                
+        
         if self.row < self.total_rows - 1 and not grid[self.row][self.col - 1].is_barrier(): # check right
-            self.neighbours.append(grid[self.row][self.col-1])
-                   
+             self.neighbours.append(grid[self.row][self.col-1])
+            
+        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier(): # check down
+            self.neighbours.append(grid[self.row + 1][self.col])
+            
 
 # define the heuristic function, defines distance between point1 and point2 and returns it
 # using manhatten distance to help 'guess' the nearest distance, this works as it can't move diagonally in one step
@@ -132,7 +132,7 @@ def algorithm(draw, grid, start, end):
         for event in pygame.event.get(): # if there is no possible path user is still able to quit program while it is running
             if event.type == pygame.QUIT:
                 pygame.quit()
-        # current is current node being looked at, we remove the lowest fscore from the open set hash         
+                
         current = open_set.get()[2] # indexing at 2 because the open set is storing fscore count and node but we just want the node
 
         
@@ -232,7 +232,7 @@ def main(win, width):
                 if node == start:
                     start = None
                 elif node == end:
-                    end == None
+                    end = None
             if event.type == pygame.KEYDOWN: # checks to see if a key has been pressed
                 if event.key == pygame.K_SPACE and not started: # if the key pressed is spacebar then the algorithm runs
                     start_time = time.time()
